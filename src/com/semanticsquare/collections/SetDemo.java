@@ -40,13 +40,71 @@ public class SetDemo {
 		System.out.println("linkedHashSet: " + linkedHashSet);
 	}
 	
+	private static void treeSetDemo() {
+		Book book1 = new Book("Harry Potter", "J.K.Rowling", 1997);
+		Book book2 = new Book("Harry Potter", "J.K.Rowling", 1997);
+		Book book3 = new Book("Walden", "Henry David Thoreau", 1854);
+		Book book4 = new Book("Effective Java", "Joshua Bloch", 2008);
+			  
+		Set<Book> books = new TreeSet<>();
+		books.add(book1);
+		books.add(book2);
+		books.add(book3);
+		books.add(book4);
+	      
+	    for (Book book : books) {
+	    	System.out.println(book);
+	    }		
+	}
+	
+	private static void treeSetDemo2() {
+		NavigableSet<Integer> set = new TreeSet<>();
+		set.add(5);
+		set.add(23);
+		set.add(74);
+		set.add(89);
+		
+		System.out.println("lower: " + set.lower(74));
+		System.out.println("floor: " + set.floor(74));
+		System.out.println("ceiling: " + set.ceiling(74));
+		System.out.println("higher: " + set.higher(74));
+		
+		System.out.println("first: " + set.first());
+		System.out.println("last: " + set.last());
+		
+		System.out.println("set: " + set);
+		
+		NavigableSet<Integer> descendingSet = set.descendingSet();
+		System.out.println("descendingSet: " + descendingSet);
+		
+		NavigableSet<Integer> headSet = set.headSet(74, true);
+		System.out.println("headSet: " + headSet);
+		
+		headSet.add(6);
+		System.out.println("headSet: " + headSet);
+		System.out.println("set: " + set);
+		headSet.add(4);
+		//headSet.add(75); // throws IllegalArgumentException
+		System.out.println("set: " + set);
+		
+		SortedSet<Integer> subSet = set.subSet(5, 74);
+		//subSet.add(2); // throws IllegalArgumentException
+		
+		// Adding element in backed set (original set) and 
+		// see it getting reflected in subSet
+		set.add(25);
+		System.out.println("subSet: " + subSet);
+	}
+	
 	public static void main(String[] args) {
 		// hashSetDemo();
-		linkedHashSetDemo();
+		// linkedHashSetDemo
+		// treeSetDemo();
+		treeSetDemo2();
 	}	
 }
 
-class Book {
+class Book implements Comparable {
 	private String title;
 	private String author;
 	private int year;
@@ -128,5 +186,19 @@ class Book {
 	public boolean equals(Object o) {
 		return (year == (((Book)o).getYear())) && (author.equals((((Book)o).getAuthor())));
 	}*/	
+	
+	public int compareTo(Object book) {
+		 return getTitle().compareTo(((Book)book).getTitle()); // utilizing String’s compareTo
+	}
+	
+}
+
+class TitleComparator implements Comparator {
+
+	@Override
+	public int compare(Object o1, Object o2) {
+		// TODO Auto-generated method stub
+		return ((Book)o1).getTitle().compareTo(((Book)o2).getTitle());
+	}
 	
 }
